@@ -3,9 +3,9 @@
     package="com.outstarttech.kabir.eidcardeditor">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
 
     <application
         android:name="com.kabir.imageeditor.PhotoApp"
@@ -31,7 +31,8 @@
             android:resource="@array/preloaded_fonts" />
 
         <activity android:name="com.kabir.imageeditor.MainActivity" />
-        <activity android:name="com.kabir.imageeditor.EditImageActivity"></activity>
+        <activity android:name="com.kabir.imageeditor.EditImageActivity" />
+        <activity android:name="com.kabir.imageeditor.CardsActivity2"></activity>
     </application>
 
 </manifest>

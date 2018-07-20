@@ -14,9 +14,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.WindowManager;
-import android.widget.RelativeLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,8 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.kabir.imageeditor.adapters.CardsAdapter;
 import com.outstarttech.kabir.eidcardeditor.R;
 
-
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class CardsActivity2 extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
@@ -38,9 +35,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public android.support.v7.app.ActionBarDrawerToggle mToggle;
     public Toolbar mToolbar;
 
-    RelativeLayout completeEidCards;
-    RelativeLayout cardsBackgrounds;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,8 +44,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        completeEidCards = findViewById(R.id.completeCards);
-        cardsBackgrounds = findViewById(R.id.cardsBackgrounds);
 
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -59,13 +51,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         userDatabase = FirebaseDatabase.getInstance();
 
 
-        navigationView1 = (NavigationView) findViewById(R.id.drawerLayoutNewActivity);
+        navigationView1 = (NavigationView) findViewById(R.id.drawerMainActivity2);
         navigationView1.setNavigationItemSelectedListener(this);
         firebaseAuth = FirebaseAuth.getInstance();
 
         mToolbar = (Toolbar) findViewById(R.id.nav_action);
         setSupportActionBar(mToolbar);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayoutNewActivity);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayoutMainActivity2);
         mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
 
         mDrawerLayout.addDrawerListener(mToggle);
@@ -73,19 +65,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        completeEidCards.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, CardsActivity.class));
-            }
-        });
+        // Recycler View To Display The List Of Recipes
+        RecyclerView rvRecipe = (RecyclerView) findViewById(R.id.recRecipes);
 
-        cardsBackgrounds.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, CardsActivity2.class));
-            }
-        });
+        final CardsAdapter adaptor = new CardsAdapter();
+        rvRecipe.setAdapter(adaptor);
+        LinearLayoutManager familyLayoutManager =
+                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        rvRecipe.setLayoutManager(familyLayoutManager);
 
     }
 
@@ -112,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             case R.id.home: {
                 finish();
-                startActivity(new Intent(MainActivity.this, MainActivity.class));
+                startActivity(new Intent(CardsActivity2.this, MainActivity.class));
                 //do somthing
                 break;
             }
@@ -136,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
             case R.id.recipes: {
                 finish();
-                startActivity(new Intent(MainActivity.this, MainActivity.class));
+                startActivity(new Intent(CardsActivity2.this, MainActivity.class));
                 //do somthing
                 break;
             }
