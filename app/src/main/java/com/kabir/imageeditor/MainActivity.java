@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cards);
+        setContentView(R.layout.activity_main);
 
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         userDatabase = FirebaseDatabase.getInstance();
 
 
-        navigationView1 = (NavigationView) findViewById(R.id.drawerLayoutNewActivity);
+        navigationView1 = (NavigationView) findViewById(R.id.drawerNewActivity);
         navigationView1.setNavigationItemSelectedListener(this);
         firebaseAuth = FirebaseAuth.getInstance();
 

@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.kabir.imageeditor.CardsActivity"
+            android:name="com.kabir.imageeditor.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -30,7 +30,7 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <activity android:name="com.kabir.imageeditor.MainActivity" />
+        <activity android:name="com.kabir.imageeditor.CardsActivity" />
         <activity android:name="com.kabir.imageeditor.EditImageActivity" />
         <activity android:name="com.kabir.imageeditor.CardsActivity2"></activity>
     </application>
