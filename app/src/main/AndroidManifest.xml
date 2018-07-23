@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.kabir.imageeditor.MainActivity"
+            android:name="com.kabir.imageeditor.SplashScreen"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -32,7 +32,8 @@
 
         <activity android:name="com.kabir.imageeditor.CardsActivity" />
         <activity android:name="com.kabir.imageeditor.EditImageActivity" />
-        <activity android:name="com.kabir.imageeditor.CardsActivity2"></activity>
+        <activity android:name="com.kabir.imageeditor.CardsActivity2" />
+        <activity android:name="com.kabir.imageeditor.MainActivity"></activity>
     </application>
 
 </manifest>

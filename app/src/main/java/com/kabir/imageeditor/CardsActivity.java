@@ -1,9 +1,11 @@
 package com.kabir.imageeditor;
 
+import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -35,6 +37,9 @@ public class CardsActivity extends AppCompatActivity implements NavigationView.O
     public android.support.v7.app.ActionBarDrawerToggle mToggle;
     public Toolbar mToolbar;
 
+
+    ProgressDialog progressBarDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +49,10 @@ public class CardsActivity extends AppCompatActivity implements NavigationView.O
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-
+        progressBarDialog = new ProgressDialog(this);
+        progressBarDialog.setTitle("Please Wait");
+        progressBarDialog.setMessage("Loading Cards...");
+        progressBarDialog.show();
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
@@ -89,6 +97,8 @@ public class CardsActivity extends AppCompatActivity implements NavigationView.O
 
 
     }
+
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -143,5 +153,30 @@ public class CardsActivity extends AppCompatActivity implements NavigationView.O
             Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri1);
             startActivity(goToMarket);
         }
+    }
+
+
+
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//
+//        progressBarDialog.setMessage("Working");
+//        progressBarDialog.show();
+//        progressBarDialog.dismiss();
+//    }
+
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+
+        progressBarDialog.dismiss();
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+
     }
 }

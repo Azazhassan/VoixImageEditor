@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp">
+    android:padding="5dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -17,19 +17,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@color/colorPrimary"
             android:gravity="center">
 
 
 
             <ImageView
                 android:id="@+id/cardimagelist"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="1100px"
+                android:layout_height="1100px"
                 android:layout_marginLeft="0dp"
                 android:layout_gravity="center"
-                android:src="@drawable/banner"
-                android:alpha="0.7"/>
+                android:src="@drawable/newimage3"/>
 
         </LinearLayout>
 

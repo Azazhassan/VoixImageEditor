@@ -2,13 +2,17 @@ package com.kabir.imageeditor;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
@@ -18,6 +22,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.transition.ChangeBounds;
 import android.support.transition.TransitionManager;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -36,6 +41,7 @@ import com.kabir.imageeditor.tools.EditingToolsAdapter;
 import com.kabir.imageeditor.tools.ToolType;
 import com.outstarttech.kabir.eidcardeditor.R;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -78,11 +84,15 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
 
     private Bitmap bitmapnew;
 
+    ProgressDialog progressBarDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         makeFullScreen();
         setContentView(R.layout.activity_edit_image);
+
+
 
         Intent intent = getIntent();
         Cards cards = (Cards)  intent.getSerializableExtra("Card");
@@ -138,6 +148,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
         try {
             URL url = new URL(itemPicUrl1);
             mPhotoEditorView.getSource().setImageBitmap(BitmapFactory.decodeStream((InputStream)url.getContent()));
+            bitmapnew = BitmapFactory.decodeStream((InputStream)url.getContent());
         } catch (IOException e) {
             Log.e(TAG, e.getMessage());
         }
@@ -146,7 +157,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
     private void initViews() {
         ImageView imgUndo;
         ImageView imgRedo;
-        ImageView imgCamera;
+        TextView imgCamera;
         ImageView imgGallery;
         ImageView imgSave;
         ImageView imgClose;
@@ -164,7 +175,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
         imgRedo = findViewById(R.id.imgRedo);
         imgRedo.setOnClickListener(this);
 
-        imgCamera = findViewById(R.id.imgCamera);
+        imgCamera = findViewById(R.id.share);
         imgCamera.setOnClickListener(this);
 
         imgGallery = findViewById(R.id.imgGallery);
@@ -238,9 +249,39 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
                 onBackPressed();
                 break;
 
-            case R.id.imgCamera:
-                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+            case R.id.share:
+                Intent i = new Intent(Intent.ACTION_SEND);
+
+                if (Build.VERSION.SDK_INT >= 23) {
+                    if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                            == PackageManager.PERMISSION_GRANTED) {
+                        i.setType("image/*");
+                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                        i.putExtra(Intent.EXTRA_TEXT, "Download & Create Your Custom Greeting Cards \n https://play.google.com/store/apps/details?id=com.outstarttech.kabir.eidcardeditor");
+                        i.putExtra(Intent.EXTRA_STREAM, getImageUri(getApplicationContext(), bitmapnew));
+                        try {
+                            startActivity(Intent.createChooser(i, "Share Image Using ..."));
+                        } catch (android.content.ActivityNotFoundException ex) {
+
+                            ex.printStackTrace();
+                        }
+
+                    } else {
+                        ActivityCompat.requestPermissions(EditImageActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+
+                    }
+                } else { //permission is automatically granted on sdk<23 upon installation
+                    i.setType("image/*");
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    i.putExtra(Intent.EXTRA_TEXT, "Download & Create Your Custom Greeting Cards \n https://play.google.com/store/apps/details?id=com.outstarttech.kabir.eidcardeditor");
+                    i.putExtra(Intent.EXTRA_STREAM, getImageUri(getApplicationContext(), bitmapnew));
+                    try {
+                        startActivity(Intent.createChooser(i, "Share Image Using ..."));
+                    } catch (android.content.ActivityNotFoundException ex) {
+
+                        ex.printStackTrace();
+                    }
+                }
                 break;
 
             case R.id.imgGallery:
@@ -250,6 +291,14 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
                 startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_REQUEST);
                 break;
         }
+    }
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100 , bytes);
+
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "QRCode", null);
+        return Uri.parse(path);
     }
 
     @SuppressLint("MissingPermission")
@@ -291,6 +340,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
                     mPhotoEditor.clearAllViews();
                     Bitmap photo = (Bitmap) data.getExtras().get("data");
                     mPhotoEditorView.getSource().setImageBitmap(photo);
+                    bitmapnew = photo;
                     break;
                 case PICK_REQUEST:
                     try {
@@ -298,6 +348,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
                         Uri uri = data.getData();
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
                         mPhotoEditorView.getSource().setImageBitmap(bitmap);
+                        bitmapnew = bitmap;
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

@@ -1,6 +1,5 @@
 package com.kabir.imageeditor.adapters;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -19,7 +18,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.kabir.imageeditor.CardsActivity;
 import com.kabir.imageeditor.EditImageActivity;
 import com.kabir.imageeditor.FirebaseUtility;
 import com.kabir.imageeditor.models.Cards;
@@ -27,7 +25,7 @@ import com.outstarttech.kabir.eidcardeditor.R;
 
 import java.util.ArrayList;
 
-public class CardsAdapter  extends RecyclerView.Adapter<CardsAdapter.DealViewHolderRecipe> {
+public class CardsAdapter2  extends RecyclerView.Adapter<CardsAdapter2.DealViewHolderRecipe> {
 
     ArrayList<Cards> cardss;
     private FirebaseDatabase mFirebaseDatabase;
@@ -36,8 +34,8 @@ public class CardsAdapter  extends RecyclerView.Adapter<CardsAdapter.DealViewHol
     Context context;
     ProgressDialog progressBarDialog;
 
-    public CardsAdapter(){
-        FirebaseUtility.openFBReference("cards");
+    public CardsAdapter2(){
+        FirebaseUtility.openFBReference("backgrounds");
         mFirebaseDatabase = FirebaseUtility.mFirebaseDatabase;
         mDatabaseReference = FirebaseUtility.mDatabaseReference;
         cardss = FirebaseUtility.recipeArrayList;
@@ -78,18 +76,18 @@ public class CardsAdapter  extends RecyclerView.Adapter<CardsAdapter.DealViewHol
 
     @NonNull
     @Override
-    public DealViewHolderRecipe onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public CardsAdapter2.DealViewHolderRecipe onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
 
 
         View itemView = LayoutInflater.from(context)
                 .inflate(R.layout.listtemplate, parent, false);
 
-        return  new DealViewHolderRecipe(itemView);
+        return  new CardsAdapter2.DealViewHolderRecipe(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull DealViewHolderRecipe holder, int position) {
+    public void onBindViewHolder(@NonNull CardsAdapter2.DealViewHolderRecipe holder, int position) {
 
         Cards recipes1 = cardss.get(position);
         holder.bind(recipes1);

@@ -1,9 +1,11 @@
 package com.kabir.imageeditor;
 
+import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -21,6 +23,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.kabir.imageeditor.adapters.CardsAdapter;
+import com.kabir.imageeditor.adapters.CardsAdapter2;
 import com.outstarttech.kabir.eidcardeditor.R;
 
 public class CardsActivity2 extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -35,6 +38,9 @@ public class CardsActivity2 extends AppCompatActivity implements NavigationView.
     public android.support.v7.app.ActionBarDrawerToggle mToggle;
     public Toolbar mToolbar;
 
+
+    ProgressDialog progressBarDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +50,10 @@ public class CardsActivity2 extends AppCompatActivity implements NavigationView.
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        progressBarDialog = new ProgressDialog(this);
+        progressBarDialog.setTitle("Please Wait");
+        progressBarDialog.setMessage("Loading Cards...");
+        progressBarDialog.show();
 
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -68,7 +78,7 @@ public class CardsActivity2 extends AppCompatActivity implements NavigationView.
         // Recycler View To Display The List Of Recipes
         RecyclerView rvRecipe = (RecyclerView) findViewById(R.id.recRecipes);
 
-        final CardsAdapter adaptor = new CardsAdapter();
+        final CardsAdapter2 adaptor = new CardsAdapter2();
         rvRecipe.setAdapter(adaptor);
         LinearLayoutManager familyLayoutManager =
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -143,5 +153,23 @@ public class CardsActivity2 extends AppCompatActivity implements NavigationView.
             Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri1);
             startActivity(goToMarket);
         }
+    }
+
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//
+//        if(progressBarDialog.isShowing())
+//        {
+//            progressBarDialog.dismiss();
+//        }
+//    }
+
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+
+        progressBarDialog.dismiss();
     }
 }

@@ -15,7 +15,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Eid Cards Editor"
+            android:text="Custom Greeting Cards"
             android:textColor="@color/white"
             android:textStyle="bold"
             android:fontFamily="sans-serif-condensed"
@@ -26,7 +26,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Design your custom eid cards here"
+            android:text="Design your custom greeting cards here"
             android:textColor="@color/white"
             android:fontFamily="sans-serif-condensed"
             android:textSize="16sp"/>
