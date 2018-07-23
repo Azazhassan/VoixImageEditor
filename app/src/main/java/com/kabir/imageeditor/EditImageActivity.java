@@ -316,6 +316,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
                         hideLoading();
                         showSnackbar("Image Saved Successfully");
                         mPhotoEditorView.getSource().setImageURI(Uri.fromFile(new File(imagePath)));
+                        bitmapnew = mPhotoEditorView.getDrawingCache();
                     }
 
                     @Override
