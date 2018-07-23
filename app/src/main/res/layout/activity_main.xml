@@ -77,7 +77,6 @@
                        android:orientation="horizontal"
                        android:id="@+id/linearnocards"
                        android:layout_below="@+id/eidcards">
-
                        <TextView
                            android:id="@+id/noofcards"
                            android:layout_width="wrap_content"
