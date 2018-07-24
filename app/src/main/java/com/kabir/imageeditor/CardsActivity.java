@@ -174,9 +174,5 @@ public class CardsActivity extends AppCompatActivity implements NavigationView.O
         progressBarDialog.dismiss();
     }
 
-    @Override
-    protected void onPostResume() {
-        super.onPostResume();
 
-    }
 }

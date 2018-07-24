@@ -86,6 +86,8 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
 
     ProgressDialog progressBarDialog;
 
+    private boolean saved = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -251,10 +253,27 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
 
             case R.id.share:
                 Intent i = new Intent(Intent.ACTION_SEND);
+                if(saved == true)
+                {
+                    if (Build.VERSION.SDK_INT >= 23) {
+                        if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                                == PackageManager.PERMISSION_GRANTED) {
+                            i.setType("image/*");
+                            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                            i.putExtra(Intent.EXTRA_TEXT, "Download & Create Your Custom Greeting Cards \n https://play.google.com/store/apps/details?id=com.outstarttech.kabir.eidcardeditor");
+                            i.putExtra(Intent.EXTRA_STREAM, getImageUri(getApplicationContext(), bitmapnew));
+                            try {
+                                startActivity(Intent.createChooser(i, "Share Image Using ..."));
+                            } catch (android.content.ActivityNotFoundException ex) {
 
-                if (Build.VERSION.SDK_INT >= 23) {
-                    if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                            == PackageManager.PERMISSION_GRANTED) {
+                                ex.printStackTrace();
+                            }
+
+                        } else {
+                            ActivityCompat.requestPermissions(EditImageActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+
+                        }
+                    } else { //permission is automatically granted on sdk<23 upon installation
                         i.setType("image/*");
                         ByteArrayOutputStream stream = new ByteArrayOutputStream();
                         i.putExtra(Intent.EXTRA_TEXT, "Download & Create Your Custom Greeting Cards \n https://play.google.com/store/apps/details?id=com.outstarttech.kabir.eidcardeditor");
@@ -265,23 +284,13 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
 
                             ex.printStackTrace();
                         }
-
-                    } else {
-                        ActivityCompat.requestPermissions(EditImageActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-
-                    }
-                } else { //permission is automatically granted on sdk<23 upon installation
-                    i.setType("image/*");
-                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    i.putExtra(Intent.EXTRA_TEXT, "Download & Create Your Custom Greeting Cards \n https://play.google.com/store/apps/details?id=com.outstarttech.kabir.eidcardeditor");
-                    i.putExtra(Intent.EXTRA_STREAM, getImageUri(getApplicationContext(), bitmapnew));
-                    try {
-                        startActivity(Intent.createChooser(i, "Share Image Using ..."));
-                    } catch (android.content.ActivityNotFoundException ex) {
-
-                        ex.printStackTrace();
                     }
                 }
+                else
+                {
+                    showSnackbar("Save Image Before Sharing");
+                }
+
                 break;
 
             case R.id.imgGallery:
@@ -297,7 +306,8 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         inImage.compress(Bitmap.CompressFormat.JPEG, 100 , bytes);
 
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "QRCode", null);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Card", null);
+
         return Uri.parse(path);
     }
 
@@ -317,12 +327,14 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
                         showSnackbar("Image Saved Successfully");
                         mPhotoEditorView.getSource().setImageURI(Uri.fromFile(new File(imagePath)));
                         bitmapnew = mPhotoEditorView.getDrawingCache();
+                        saved = true;
                     }
 
                     @Override
                     public void onFailure(@NonNull Exception exception) {
                         hideLoading();
                         showSnackbar("Failed to save Image");
+                        saved = false;
                     }
                 });
             } catch (IOException e) {
@@ -496,7 +508,8 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
         } else if (!mPhotoEditor.isCacheEmpty()) {
             showSaveDialog();
         } else {
-            super.onBackPressed();
+            finish();
+            startActivity(new Intent(EditImageActivity.this, MainActivity.class));
         }
     }
 }
