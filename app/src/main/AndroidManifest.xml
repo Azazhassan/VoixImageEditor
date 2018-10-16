@@ -30,9 +30,7 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <activity android:name="com.kabir.imageeditor.CardsActivity" />
         <activity android:name="com.kabir.imageeditor.EditImageActivity" />
-        <activity android:name="com.kabir.imageeditor.CardsActivity2" />
         <activity android:name="com.kabir.imageeditor.MainActivity"></activity>
     </application>
 
