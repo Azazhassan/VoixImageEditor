@@ -31,7 +31,11 @@
             android:resource="@array/preloaded_fonts" />
 
         <activity android:name="com.kabir.imageeditor.EditImageActivity" />
-        <activity android:name="com.kabir.imageeditor.MainActivity"></activity>
+        <activity android:name="com.kabir.imageeditor.MainActivity" />
+        <activity
+            android:name="com.kabir.imageeditor.BasicActivity"
+            android:label="@string/title_activity_basic"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>
